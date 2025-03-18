@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>CINEMA</title>
+</head>
+<style>
+    .movie-card img {
+    width: 150px;  /* 원하는 크기로 설정 */
+    height: auto;  /* 비율 유지 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    }
+
+    .movie-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    }
+    .movie-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    text-align: center;
+    }
+
+    @media (max-width: 1024px) {
+        .movie-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+
+    #search-box {
+        text-align: center;
+
+    }
+    #movie-view {
+        height: 30px;
+    }
+    #movie-search {
+        width: 200px;
+        height: 25px;
+    }
+
+    h1 {
+        text-align: center;
+        }
+</style>
+
+<body>
+<h1>영화 검색</h1>
+<div id="search-box">
+    <input type="text" id="movie-search" placeholder="영화 제목을 입력하세요">
+    <button id="movie-view">검색</button>
+    <br>
+    <br>
+</div>
+
+<div id="movie-list" class="movie-container"></div>
+
+<script>
+    // 백엔드 API 주소를 변수로 설정
+    const BACKEND_URL = "http://localhost:8080/movie/";
+
+    // "검색" 버튼 클릭 시, 이벤트 등록
+    document.getElementById("movie-view").addEventListener("click", searchMovies);
+
+    async function searchMovies() {
+        const query = document.getElementById("movie-search").value.trim(); // 검색어 가져오기
+        if (!query) {
+            alert("검색어를 입력하세요!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${BACKEND_URL}view?query=${encodeURIComponent(query)}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                mode : "cors"
+
+            });
+
+            if (!response.ok) {
+                throw new Error("서버에서 데이터를 가져올 수 없습니다.");
+            }
+
+            const movies = await response.json();
+            displayMovies(movies);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            alert("영화 정보를 가져오는 중 오류가 발생했습니다.");
+        }
+    }
+
+    function displayMovies(movies) {
+        const movieList = document.getElementById("movie-list");
+        movieList.innerHTML = ""; // 기존 영화 목록 초기화
+
+        if (!movies || movies.length === 0) {
+            movieList.innerHTML = "<p>검색 결과가 없습니다.</p>";
+            return;
+        }
+
+        movies.forEach(movie => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+
+            const posterUrl = movie.poster_path
+                ? movie.poster_path
+                : "https://via.placeholder.com/200"; // 기본 이미지 적용
+
+            movieCard.innerHTML = `
+                <img src="${posterUrl}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>개봉일: ${movie.release_date ? movie.release_date : "정보 없음"}</p>
+                <p><a href="movie_detail.html?id=${movie.id}">자세히 보기</a></p>
+            `;
+
+            movieList.appendChild(movieCard);
+        });
+    }
+</script>
+
+</body>
+</html>
