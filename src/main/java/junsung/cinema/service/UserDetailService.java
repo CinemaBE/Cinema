@@ -1,2 +1,2 @@
-package junsung.cinema.service;public class UserDetailServic {
+package junsung.cinema.service;public class UserDetailService {
 }

@@ -1,6 +1,6 @@
-package junsung.cinema.project.repository;
+package junsung.cinema.repository;
 
-import junsung.cinema.project.entity.Review;
+import junsung.cinema.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

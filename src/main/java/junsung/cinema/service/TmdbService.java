@@ -1,7 +1,7 @@
-package junsung.cinema.project.service;
+package junsung.cinema.service;
 
-import junsung.cinema.project.dto.MovieDto;
-import junsung.cinema.project.dto.MovieListResponse;
+import junsung.cinema.dto.MovieDto;
+import junsung.cinema.dto.MovieListResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;

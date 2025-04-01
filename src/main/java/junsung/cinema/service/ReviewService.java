@@ -1,9 +1,9 @@
-package junsung.cinema.project.service;
+package junsung.cinema.service;
 
-import junsung.cinema.project.dto.ReviewRequestDto;
-import junsung.cinema.project.dto.ReviewResponseDto;
-import junsung.cinema.project.entity.Review;
-import junsung.cinema.project.repository.ReviewRepository;
+import junsung.cinema.dto.ReviewRequestDto;
+import junsung.cinema.dto.ReviewResponseDto;
+import junsung.cinema.entity.Review;
+import junsung.cinema.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package junsung.cinema.security;
+package junsung.cinema.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import junsung.cinema.entity.Grade;
 import junsung.cinema.entity.Users;
 import junsung.cinema.repository.UserRepository;
+import junsung.cinema.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.catalina.User;

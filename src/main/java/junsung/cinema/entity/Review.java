@@ -1,4 +1,4 @@
-package junsung.cinema.project.entity;
+package junsung.cinema.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package junsung.cinema.project.dto;
+package junsung.cinema.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

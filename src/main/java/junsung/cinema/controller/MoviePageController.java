@@ -1,9 +1,9 @@
-package junsung.cinema.project.controller;
+package junsung.cinema.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import junsung.cinema.project.dto.MovieDto;
-import junsung.cinema.project.dto.MovieListResponse;
-import junsung.cinema.project.service.TmdbService;
+import junsung.cinema.dto.MovieDto;
+import junsung.cinema.dto.MovieListResponse;
+import junsung.cinema.service.TmdbService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

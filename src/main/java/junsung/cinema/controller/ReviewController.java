@@ -1,8 +1,8 @@
-package junsung.cinema.project.controller;
+package junsung.cinema.controller;
 
-import junsung.cinema.project.dto.ReviewRequestDto;
-import junsung.cinema.project.dto.ReviewResponseDto;
-import junsung.cinema.project.service.ReviewService;
+import junsung.cinema.dto.ReviewRequestDto;
+import junsung.cinema.dto.ReviewResponseDto;
+import junsung.cinema.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

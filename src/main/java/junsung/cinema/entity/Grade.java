@@ -1,2 +1,8 @@
-package junsung.cinema.entity;public enum Grade {
+package junsung.cinema.entity;
+
+public enum Grade {
+
+    GOLD,
+    PLATINUM,
+    DIAMOND
 }
