@@ -1,6 +1,6 @@
 package junsung.cinema.moviePacakage;
 
-import junsung.cinema.entity.Review;
+import junsung.cinema.moviePacakage.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

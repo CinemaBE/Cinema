@@ -1,6 +1,6 @@
 package junsung.cinema.moviePacakage.dto;
 
-import junsung.cinema.entity.Review;
+import junsung.cinema.moviePacakage.entity.Review;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
