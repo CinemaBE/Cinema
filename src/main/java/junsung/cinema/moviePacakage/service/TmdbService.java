@@ -3,6 +3,7 @@ package junsung.cinema.moviePacakage.service;
 import junsung.cinema.moviePacakage.dto.MovieDto;
 import junsung.cinema.moviePacakage.dto.MovieListResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+@Service
 public class TmdbService {
 
     @Value("${tmdb.api.key}")
