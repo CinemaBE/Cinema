@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/movies")
 public class MovieController {
 
+    // 백엔드 API Controller
     private final TmdbService tmdbService;
 
     public MovieController(TmdbService tmdbService) {
