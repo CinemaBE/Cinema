@@ -1,4 +1,4 @@
-package junsung.cinema.security;
+package junsung.cinema.AuthPackage.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,7 +15,7 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
     private Key getSigningKey() {
-     return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());}
+     return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());}//?
 
     public String generateToken(String username) {
         return Jwts.builder()

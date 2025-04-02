@@ -1,4 +1,4 @@
-package junsung.cinema.dto;
+package junsung.cinema.AuthPackage.dto;
 
 import lombok.Getter;
 

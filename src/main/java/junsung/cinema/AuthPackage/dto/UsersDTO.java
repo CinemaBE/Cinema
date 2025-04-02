@@ -1,6 +1,6 @@
-package junsung.cinema.dto;
+package junsung.cinema.AuthPackage.dto;
 
-import junsung.cinema.entity.Users;
+import junsung.cinema.AuthPackage.entity.Users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

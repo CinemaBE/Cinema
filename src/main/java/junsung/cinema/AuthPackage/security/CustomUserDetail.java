@@ -1,6 +1,6 @@
-package junsung.cinema.security;
+package junsung.cinema.AuthPackage.security;
 
-import junsung.cinema.entity.Users;
+import junsung.cinema.AuthPackage.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,15 +8,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomerUserDetail implements UserDetails {
+
+public class CustomUserDetail implements UserDetails {
     private final Users user;
 
-    public CustomerUserDetail( Users user) {
+    public CustomUserDetail(Users user) {
         this.user = user;
     }
+
+    public Users getUser() {
+        return user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(/* new SimpleGrantedAuthority(user.getGrade())*/);
+        return List.of(new SimpleGrantedAuthority("ROLE_" +user.getGrade().name()));
     }
 
     @Override
@@ -26,7 +32,7 @@ public class CustomerUserDetail implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return user.getUsername();
     }
 
     @Override

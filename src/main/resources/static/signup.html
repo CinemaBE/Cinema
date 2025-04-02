@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>우회원가입</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 2rem auto; padding: 1rem; }
+        input, button { display: block; margin: 0.5rem 0; padding: 0.5rem; width: 100%; }
+        .result { white-space: pre-wrap; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+<h1>🎨 Cinema 회원가입</h1>
+
+<input type="text" id="signup-username" placeholder="아이디">
+<input type="password" id="signup-password" placeholder="비밀번호">
+<input type="password" id="signup-pass" placeholder="비밀번호 확인">
+<input type="text" id="signup-name" placeholder="이름">
+<input type="text" id="signup-phone" placeholder="전화번호">
+<input type="email" id="signup-email" placeholder="이메일">
+<input type="date" id="signup-birth" placeholder="생년월일">
+<button onclick="signup()">회원가입</button>
+
+<div class="result" id="signup-result"></div>
+
+<hr>
+<button onclick="goToLogin()">로그인 페이지로 이동</button>
+
+<script>
+    async function signup() {
+        const body = {
+            username: document.getElementById("signup-username").value,
+            password: document.getElementById("signup-password").value,
+            pass: document.getElementById("signup-pass").value,
+            name: document.getElementById("signup-name").value,
+            phone: document.getElementById("signup-phone").value,
+            email: document.getElementById("signup-email").value,
+            birth: document.getElementById("signup-birth").value,
+            count: 0
+        };
+
+        const res = await fetch("/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+
+        const result = document.getElementById("signup-result");
+        const data = await res.json();
+        if (res.ok) {
+            result.innerText = `✅ 회원가입 성공!\nID: ${data.username}`;
+        } else {
+            result.innerText = `❌ 회원가입 실패 (${res.status})`;
+        }
+    }
+
+    function goToLogin() {
+        window.location.href = "/login.html";
+    }
+</script>
+</body>
+</html>

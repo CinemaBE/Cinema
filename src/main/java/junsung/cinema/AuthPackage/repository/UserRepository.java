@@ -1,6 +1,6 @@
-package junsung.cinema.repository;
+package junsung.cinema.AuthPackage.repository;
 
-import junsung.cinema.entity.Users;
+import junsung.cinema.AuthPackage.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
