@@ -1,6 +1,6 @@
 package junsung.cinema.moviePacakage.controller;
 
-import junsung.cinema.dto.MovieListResponse;
+import junsung.cinema.moviePacakage.dto.MovieListResponse;
 import junsung.cinema.moviePacakage.service.TmdbService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
