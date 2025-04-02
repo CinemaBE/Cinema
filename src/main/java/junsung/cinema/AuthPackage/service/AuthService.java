@@ -3,10 +3,9 @@ package junsung.cinema.AuthPackage.service;
 import junsung.cinema.AuthPackage.entity.Grade;
 import junsung.cinema.AuthPackage.entity.Users;
 import junsung.cinema.AuthPackage.repository.UserRepository;
+import junsung.cinema.AuthPackage.security.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,17 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
     private final UserRepository userRepository;
-    private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
+    public Users login(String username, String password) {
+
+        Users users = userRepository.findByUsername(username );
+
+        if (users != null&& bcryptPasswordEncoder.matches(password,users.getPassword())) { // 실제 서비스에서는 DB 조회 필요
+
+            return  users;
+        }
+        return null;}
 
     public Users signUp(String username, String password1, String password2 , String email , String phone, String name, String birth) {
         if (userRepository.findByEmail(email) != null)
@@ -26,7 +34,7 @@ public class AuthService {
 
         Users user = new Users();
         user.setUsername(username);
-            user.setPassword(bcryptPasswordEncoder.encode(password1));
+        user.setPassword(bcryptPasswordEncoder.encode(password1));
         user.setName(name);
         user.setPhone(phone);
         user.setEmail(email);

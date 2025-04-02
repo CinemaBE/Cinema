@@ -15,7 +15,7 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
     private Key getSigningKey() {
-     return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());}//?
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());}
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -25,7 +25,7 @@ public class JwtUtil {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-//============================로그인 후 필요한 메서드 =====================
+    //============================로그인 후 필요한 메서드 =====================
     public String validateToken(String token){ //얜 JWT 객체가 존재하는지의 검증
         try{
             return Jwts.parser()
