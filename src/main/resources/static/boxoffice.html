@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>서울 박스오피스</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+        h1 { margin-bottom: 1rem; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 0.5rem 0; border-bottom: 1px solid #ddd; }
+        .user-info { margin-bottom: 1rem; }
+        .logout-btn { background: #f44336; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer; }
+    </style>
+    <script src="/js/auth.js"></script>
+</head>
+<body>
+<div class="user-info">
+    <span id="username">로그인 정보 불러오는 중...</span>
+    <button class="logout-btn" onclick="logout()">로그아웃</button>
+</div>
+
+<h1>한국 서울 상영작 백스오피스 목록</h1>
+<ul id="movie-list">
+    <li>불러오는 중...</li>
+</ul>
+
+<script>
+    // 유저 정보 가져오기
+    authFetch("/auth/me")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("username").textContent = `${data.username}님 안녕하세요!`;
+        })
+        .catch(() => {
+            document.getElementById("username").textContent = "(비로그인 상태)";
+        });
+
+    // 로그아웃 기능
+    function logout() {
+        // 1. 토큰 삭제
+        localStorage.removeItem("token");
+
+        // 2. 선택적으로 서버에도 로그아웃 요청 (필요 없다면 생략 가능)
+        authFetch("/auth/logout", { method: "POST" })
+            .finally(() => {
+                // 3. 로그인 페이지로 이동
+                window.location.href = "/login.html";
+            });
+    }
+
+    // 영화 데이터 가져오기
+    authFetch("/movie/boxoffice")
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById("movie-list");
+            list.innerHTML = "";
+            const movies = data.boxOfficeResult.dailyBoxOfficeList || data.boxOfficeResult.weeklyBoxOfficeList;
+
+            if (!movies || movies.length === 0) {
+                list.innerHTML = "<li>영화 데이터가 없습니다.</li>";
+                return;
+            }
+
+            movies.forEach(movie => {
+                const li = document.createElement("li");
+                li.textContent = `${movie.rank}. ${movie.movieNm} (${movie.openDt})`;
+                list.appendChild(li);
+            });
+        })
+        .catch(error => {
+            document.getElementById("movie-list").innerHTML = "<li>데이터를 불러오는 데 실패했습니다.</li>";
+            console.error("에러 발생:", error);
+        });
+</script>
+</body>
+</html>
