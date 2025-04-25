@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 해제
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**.html","/**.css","/js/**", "/auth/**", "/h2-console/**").permitAll() // H2 Console 접근 허용
+                        .requestMatchers("/","/movies/**","/**.html","/**.css","/js/**", "/auth/**", "/h2-console/**", "/api/movies/**").permitAll() // H2 Console 접근 허용
                         .anyRequest().hasAnyRole("BRONZE","GOLD","PLATINUM","DIAMON"))
                 .headers(headers -> headers.frameOptions(frame -> frame.disable())) // H2 Console을 위한 프레임 옵션 해제
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

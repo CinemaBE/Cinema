@@ -3,7 +3,7 @@ package junsung.cinema.moviePacakage.service;
 import junsung.cinema.moviePacakage.dto.ReviewRequestDto;
 import junsung.cinema.moviePacakage.dto.ReviewResponseDto;
 import junsung.cinema.moviePacakage.entity.Review;
-import junsung.cinema.moviePacakage.ReviewRepository;
+import junsung.cinema.moviePacakage.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

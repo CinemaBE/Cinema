@@ -1,92 +1,103 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${movie.title}">영화 상세</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title>영화 상세</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 2rem auto; padding: 1rem; }
+    img { max-width: 200px; margin-bottom: 1rem; }
+    textarea { margin-top: 1rem; width: 100%; padding: 0.5rem; }
+    button { margin-top: 0.5rem; padding: 0.5rem 1rem; }
+  </style>
 </head>
-<body class="bg-light">
-<div class="container mt-5">
-  <div class="card mb-4 shadow">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterPath}" class="img-fluid rounded-start" th:alt="${movie.title}">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h2 class="card-title mb-3" th:text="${movie.title}">영화 제목</h2>
-          <p class="card-text"><strong>감독:</strong> <span th:text="${movie.director}">감독 이름</span></p>
-          <p class="card-text"><strong>출연진:</strong>
-            <span th:text="${#strings.arrayJoin(movie.actors.toArray(), ', ')}">출연진 리스트</span>
-          </p>
-          <p class="card-text"><strong>개봉일:</strong> <span th:text="${movie.releaseDate}">개봉일</span></p>
-          <p class="card-text"><strong>줄거리:</strong></p>
-          <p class="card-text" th:text="${movie.overview}">줄거리 내용</p>
-          <a href="javascript:history.back()" class="btn btn-secondary mt-3">← 목록으로 돌아가기</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<body>
 
-  <!-- 한줄평 작성 -->
-  <div class="card p-4 mb-4 shadow-sm">
-    <h4 class="mb-3">한줄평 작성</h4>
-    <form id="reviewForm">
-      <div class="mb-3">
-        <input type="text" id="writer" class="form-control" placeholder="작성자" required />
-      </div>
-      <div class="mb-3">
-        <input type="text" id="content" class="form-control" placeholder="한줄평을 입력하세요" required />
-      </div>
-      <button type="submit" class="btn btn-primary">등록</button>
-    </form>
-  </div>
-  <!-- 후기 목록 -->
-  <div class="card p-4 shadow-sm">
-    <h4 class="mb-3">한줄평 목록</h4>
-    <ul id="reviewList" class="list-group">
-      <!-- 후기 항목 동적으로 생성됨 -->
-    </ul>
-  </div>
-</div>
+<h1>🎞️ 영화 상세 정보</h1>
+<div id="movie-detail">불러오는 중...</div>
+<button onclick="history.back()">← 목록으로 돌아가기</button>
+
+<hr>
+
+<h3>💬 한줄평</h3>
+<input type="text" id="review-writer" placeholder="작성자 이름" style="width:20%; margin-bottom: 0.5rem; padding: 0.5rem;">
+<textarea id="review-content" rows="3" placeholder="한줄평을 입력하세요"></textarea>
+<button onclick="submitReview()">등록</button>
+
+<ul id="review-list" style="margin-top: 1rem; padding-left: 1rem;"></ul>
+
 <script>
-  const movieId = [[${movie.id}]]; // Thymeleaf로 movieId 주입
+  const params = new URLSearchParams(location.search);
+  const movieId = params.get('id');
 
-  // 후기 목록 불러오기
-  async function loadReviews() {
-    const res = await fetch(`/api/movies/${movieId}/reviews`);
-    const reviews = await res.json();
+  async function fetchMovieDetail(id) {
+    try {
+      const res = await fetch(`/movies/detail/${id}`);
+      if (!res.ok) throw new Error(`응답 오류: ${res.status}`);
+      const movie = await res.json();
 
-    const list = document.getElementById("reviewList");
-    list.innerHTML = "";
-
-    reviews.forEach(r => {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-      li.innerHTML = `<strong>${r.writer}</strong>: ${r.content} <em>(${r.createdAt.slice(0, 10)})</em>`;
-      list.appendChild(li);
-    });
+      const container = document.getElementById('movie-detail');
+      container.innerHTML = `
+        <h2>${movie.title}</h2>
+        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+        <p><strong>개봉일:</strong> ${movie.release_date}</p>
+        <p><strong>감독:</strong> ${movie.director}</p>
+        <p><strong>출연:</strong> ${movie.actors.join(', ')}</p>
+        <p><strong>줄거리:</strong> ${movie.overview}</p>
+      `;
+    } catch (err) {
+      console.error(err);
+      alert("죄송합니다. 영화 정보를 불러오는 데 실패했습니다!");
+    }
   }
 
-  // 한줄평 등록
-  document.getElementById("reviewForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const writer = document.getElementById("writer").value;
-    const content = document.getElementById("content").value;
+  async function fetchReviews(id) {
+    const res = await fetch(`/api/movies/${id}/reviews`);
+    if (!res.ok) return;
+    const reviews = await res.json();
+    const list = document.getElementById('review-list');
+    list.innerHTML = reviews.map(r => `
+    <li>📝 <strong>${r.writer}</strong>: ${r.content}</li>
+  `).join('');
+  }
 
-    await fetch(`/api/movies/${movieId}/reviews`, {
+  async function submitReview() {
+    const writer = document.getElementById('review-writer').value.trim();
+    const content = document.getElementById('review-content').value.trim();
+
+    if (!writer) {
+      alert("작성자 이름을 입력하세요.");
+      return;
+    }
+    if (!content) {
+      alert("한줄평을 입력하세요.");
+      return;
+    }
+
+    const res = await fetch(`/api/movies/${movieId}/reviews`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ writer, content })
+      body: JSON.stringify({
+        writer: writer,
+        content: content
+      })
     });
 
-    document.getElementById("writer").value = '';
-    document.getElementById("content").value = '';
-    loadReviews();
-  });
+    if (res.ok) {
+      document.getElementById('review-writer').value = '';
+      document.getElementById('review-content').value = '';
+      fetchReviews(movieId);
+    } else {
+      alert("등록 실패 😥");
+    }
+  }
 
-  // 페이지 진입 시 후기 목록 불러오기
-  window.onload = loadReviews;
+  if (movieId) {
+    fetchMovieDetail(movieId);
+    fetchReviews(movieId);
+  } else {
+    document.getElementById('movie-detail').textContent = "영화 ID가 없습니다.";
+  }
 </script>
+
 </body>
 </html>
